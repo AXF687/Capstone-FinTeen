@@ -1,1 +1,1 @@
-# Capstone-FinTeen---Smart-Budgeting-for-Smarter-Future
+# Capstone | FinTeen - Smart Budgeting for Smarter Future
