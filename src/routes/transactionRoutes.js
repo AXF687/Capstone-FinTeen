@@ -6,6 +6,14 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 /**
  * @swagger
+ * tags:
+ *   name: Transaksi
+ *   description: API untuk mengelola transaksi keuangan
+ */
+
+
+/**
+ * @swagger
  * /transaksi:
  *   post:
  *     summary: Tambah transaksi
@@ -18,49 +26,76 @@ const authMiddleware = require("../middleware/authMiddleware");
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - tipe
+ *               - nominal
+ *               - kategori
+ *               - tanggal
  *             properties:
- *               type:
+ *               tipe:
  *                 type: string
- *                 enum: [income, expense]
- *               amount:
+ *                 enum: [pemasukan, pengeluaran]
+ *                 example: pengeluaran
+ *               nominal:
  *                 type: number
- *               category:
+ *                 example: 50000
+ *               kategori:
  *                 type: string
- *               note:
+ *                 example: makan
+ *               catatan:
  *                 type: string
- *               date:
+ *                 example: makan siang
+ *               tanggal:
  *                 type: string
  *                 format: date
+ *                 example: 2026-03-09
  *     responses:
- *       200:
+ *       201:
  *         description: Transaksi berhasil dibuat
  */
 router.post("/", authMiddleware, transactionController.createTransaction);
+
+
 
 /**
  * @swagger
  * /transaksi:
  *   get:
- *     summary: Ambil transaksi user
+ *     summary: Ambil semua transaksi milik user
+ *     tags: [Transaksi]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Daftar transaksi berhasil diambil
+ */
+router.get("/", authMiddleware, transactionController.getTransactions);
+
+
+
+/**
+ * @swagger
+ * /transaksi/{id}:
+ *   get:
+ *     summary: Ambil detail satu transaksi
  *     tags: [Transaksi]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: query
- *         name: bulan
+ *       - in: path
+ *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
- *       - in: query
- *         name: tahun
- *         schema:
- *           type: string
- *         required: true
  *     responses:
  *       200:
- *         description: Daftar transaksi
+ *         description: Detail transaksi berhasil diambil
+ *       404:
+ *         description: Transaksi tidak ditemukan
  */
-router.get("/", authMiddleware, transactionController.getTransactions);
+router.get("/:id", authMiddleware, transactionController.getSingleTransaction);
+
+
 
 /**
  * @swagger
@@ -77,27 +112,33 @@ router.get("/", authMiddleware, transactionController.getTransactions);
  *         schema:
  *           type: string
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               type:
+ *               tipe:
  *                 type: string
- *               amount:
+ *                 enum: [pemasukan, pengeluaran]
+ *               nominal:
  *                 type: number
- *               category:
+ *               kategori:
  *                 type: string
- *               note:
+ *               catatan:
  *                 type: string
- *               date:
+ *               tanggal:
  *                 type: string
+ *                 format: date
  *     responses:
  *       200:
  *         description: Transaksi berhasil diupdate
+ *       404:
+ *         description: Transaksi tidak ditemukan
  */
 router.put("/:id", authMiddleware, transactionController.updateTransaction);
+
+
 
 /**
  * @swagger
@@ -116,7 +157,11 @@ router.put("/:id", authMiddleware, transactionController.updateTransaction);
  *     responses:
  *       200:
  *         description: Transaksi berhasil dihapus
+ *       404:
+ *         description: Transaksi tidak ditemukan
  */
 router.delete("/:id", authMiddleware, transactionController.deleteTransaction);
+
+
 
 module.exports = router;

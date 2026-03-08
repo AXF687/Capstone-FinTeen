@@ -1,0 +1,3 @@
+PORT=9000
+MONGO_URI=mongodb+srv://finteenDB:AkunBersama123@finteen.i6anyuk.mongodb.net/finteen?retryWrites=true&w=majority
+JWT_SECRET=4241c56cf15a6a54f8d5e92355f253f3a46b8be330a5f8f2f744d2bcf0e319c6736b062a6beb7ef1798bf7ed0c137c779df208bd8039351d776b49aab56ceee9
