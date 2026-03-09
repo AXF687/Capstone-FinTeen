@@ -1,14 +1,14 @@
 const User = require("../models/User");
 
-//get profil
+// get profil
 exports.getProfile = async (req, res) => {
   res.json(req.user);
 };
 
-//update profil
+// update profil
 exports.updateProfile = async (req, res) => {
   try {
-    const { pemasukan_bulanan, target_bulanan, goal_utama } = req.body;
+    const { pemasukan_bulanan, target_bulanan, goal_utama, status } = req.body;
 
     const user = await User.findById(req.user._id);
 
@@ -26,6 +26,10 @@ exports.updateProfile = async (req, res) => {
 
     if (goal_utama !== undefined) {
       user.goal_utama = goal_utama;
+    }
+
+    if (status !== undefined) {
+      user.profil.status = status;
     }
 
     await user.save();
