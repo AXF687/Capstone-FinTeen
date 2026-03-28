@@ -45,8 +45,7 @@ export default function ForgotPassword() {
       </div>
 
       <Card className="w-full max-w-md shadow-lg border-blue-100 dark:border-slate-800 dark:bg-slate-900 transition-colors duration-500 z-10 overflow-hidden">
-        
-        {/* TAMPILAN 1: Form Input Email */}
+       
         {!isSent ? (
           <>
             <CardHeader className="text-center">
@@ -87,7 +86,6 @@ export default function ForgotPassword() {
             </CardContent>
           </>
         ) : (
-          /* TAMPILAN 2: Sukses Terkirim */
           <div className="py-12 px-6 text-center animate-in fade-in zoom-in-95 duration-500">
             <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-emerald-500">
               <MailCheck className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />

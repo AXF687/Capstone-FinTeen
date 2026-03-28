@@ -9,29 +9,25 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
-// 🌟 TAHAP 1: Minta OTP (Menggantikan fungsi register lama)
 exports.requestOtp = async (req, res) => {
   try {
     const { nama, email, password } = req.body;
     if (!nama || !email || !password) return res.status(400).json({ message: "Semua field wajib diisi" });
 
-    // 1. Validasi Domain Gmail
+    // Validasi Domain Gmail
     if (!email.endsWith("@gmail.com")) {
       return res.status(400).json({ message: "Pendaftaran wajib menggunakan akun @gmail.com yang valid!" });
     }
 
-    // 2. Cek apakah email sudah terdaftar di tabel User asli
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "Email sudah terdaftar. Silakan login." });
 
-    // 3. Generate 6 Digit OTP
+    // Generate 6 Digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // 4. Hash Password (Agar aman di tabel sementara)
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 5. Simpan/Timpa ke tabel OTP Sementara
-    await OtpVerification.findOneAndDelete({ email }); // Hapus jika user minta ulang
+    await OtpVerification.findOneAndDelete({ email }); 
     await OtpVerification.create({
       nama,
       email,
@@ -39,7 +35,6 @@ exports.requestOtp = async (req, res) => {
       otp: otpCode
     });
 
-    // 6. Kirim Email OTP yang estetik
     const pesanEmail = `
       <div style="font-family: Arial, sans-serif; max-w: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
         <div style="background-color: #059669; padding: 20px; text-align: center; color: white;">
@@ -64,24 +59,21 @@ exports.requestOtp = async (req, res) => {
   }
 };
 
-// 🌟 TAHAP 2: Verifikasi OTP dan Buat Akun Permanen
 exports.verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
     if (!email || !otp) return res.status(400).json({ message: "Email dan OTP wajib diisi" });
 
-    // 1. Cari data pendaftaran di Gudang Sementara
     const pendingData = await OtpVerification.findOne({ email, otp });
 
     if (!pendingData) {
       return res.status(400).json({ message: "Kode OTP salah atau sudah kadaluarsa (lebih dari 5 menit)." });
     }
 
-    // 2. Jika OTP Cocok, Buat User Permanen
     const user = await User.create({
       nama: pendingData.nama,
       email: pendingData.email,
-      password: pendingData.password, // Password ini sudah di-hash dari awal
+      password: pendingData.password,
       profil: {
         status: "pelajar",
         saldo_awal: 0,
@@ -89,10 +81,8 @@ exports.verifyOtp = async (req, res) => {
       }
     });
 
-    // 3. Hapus data dari Gudang Sementara
     await OtpVerification.findByIdAndDelete(pendingData._id);
 
-    // 4. Berikan Token agar bisa langsung Login otomatis
     const token = generateToken(user._id);
 
     res.status(201).json({ 
@@ -104,8 +94,6 @@ exports.verifyOtp = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// --- FUNGSI BAWAAN (TIDAK ADA YANG DIUBAH) ---
 
 exports.login = async (req, res) => {
   try {

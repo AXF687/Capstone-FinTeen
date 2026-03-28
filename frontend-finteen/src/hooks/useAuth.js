@@ -10,15 +10,12 @@ const useAuth = () => {
     const handleLogin = async ({ email, password }) => {
         try {
             const res = await authService.login({ email, password });
-            
-            // 1. Simpan token ke LocalStorage agar API terbuka
+          
             localStorage.setItem('token', res.token);
 
-            // 2. Tarik data profil dari Backend
             const dataUser = await authService.getProfil();
             const sudahSetUp = dataUser?.profil?.status && dataUser.profil.status !== "lainnya";
 
-            // 3. Update Global State
             login(dataUser, res.token); 
             updateUser({
                 ...dataUser,
@@ -26,7 +23,6 @@ const useAuth = () => {
                 profil_lengkap: sudahSetUp,
             });
 
-            // 4. Arahkan user (App.jsx juga akan memvalidasi ini sebagai lapis kedua)
             if (sudahSetUp) {
                 navigate('/dashboard', { replace: true });
             } else {
@@ -43,14 +39,11 @@ const useAuth = () => {
 
     const loginWithGoogleToken = async (googleToken, isNewUser) => {
         try {
-            // 1. Simpan token ke LocalStorage agar API terbuka
             localStorage.setItem('token', googleToken); 
 
-            // 2. Tarik data profil dari Backend
             const dataUser = await authService.getProfil();
             const sudahSetUp = dataUser?.profil?.status && dataUser.profil.status !== "lainnya";
 
-            // 3. Update Global State
             login(dataUser, googleToken);
             updateUser({
                 ...dataUser,
@@ -58,7 +51,6 @@ const useAuth = () => {
                 profil_lengkap: sudahSetUp,
             });
 
-            // 4. Arahkan user (Jika isNewUser = true ATAU status profil belum lengkap)
             if (isNewUser || !sudahSetUp) {
                 toast.success("Hore! Akun FinTeen berhasil dibuat. Yuk lengkapi profilmu!");
                 navigate('/setup-profil', { replace: true });
@@ -75,7 +67,6 @@ const useAuth = () => {
     };
 
     const handleRegister = async ({ nama, email, password }) => {
-        // Terhubung dengan sistem OTP yang baru
         const res = await authService.requestOtp({ nama, email, password });
         return res; 
     };

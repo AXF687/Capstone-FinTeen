@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Wallet, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 export default function ResetPassword() {
-  const { token } = useParams(); // Mengambil token dari URL
+  const { token } = useParams(); 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -28,8 +28,7 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validasi Manual di Frontend
+   
     if (formData.password.length < 6) {
       toast.error("Password minimal 6 karakter!");
       return;

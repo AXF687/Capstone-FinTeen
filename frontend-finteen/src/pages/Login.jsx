@@ -23,7 +23,6 @@ export default function Login() {
     document.title = "Login - FinTeen";
   }, []);
 
-  // 🌟 PENANGKAP GOOGLE TOKEN
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tokenFromGoogle = urlParams.get("token");
@@ -38,7 +37,6 @@ export default function Login() {
     if (errorFromGoogle) {
       window.history.replaceState({}, document.title, "/login");
       if (errorFromGoogle === "email_exists") {
-        // 🌟 FIX: Gunakan ID agar toast tidak bertumpuk jika kerender dua kali
         toast.error("Email sudah terdaftar! Silakan langsung login pakai password.", { id: "google-err-exist" });
       } else {
         toast.error("Login dengan Google gagal atau dibatalkan.", { id: "google-err-fail" });
@@ -46,7 +44,6 @@ export default function Login() {
     }
   }, [location, loginWithGoogleToken]);
 
-  // 🌟 PENANGKAP MANUAL LOGIN
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -58,7 +55,6 @@ export default function Login() {
     } catch (error) {
       const pesanError = error.response?.data?.message || "Gagal login. Periksa email dan password.";
       setErrorMsg(pesanError);
-      // 🌟 FIX: Gunakan ID untuk mencegah tumpang tindih
       toast.error(pesanError, { id: "login-err" });
     } finally {
       setLoading(false);

@@ -19,20 +19,17 @@ import LogoImage from "../assets/finteenLogo.png";
 export default function Register() {
   const navigate = useNavigate();
 
-  // 🌟 State Navigasi & UI
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // 🌟 State Data Form
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
     password: "",
   });
 
-  // 🌟 State OTP
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
 
@@ -40,7 +37,6 @@ export default function Register() {
     document.title = "Register - FinTeen";
   }, []);
 
-  // --- TAHAP 1: MINTA OTP ---
   const handleRequestOtp = async (e) => {
     e.preventDefault();
     if (formData.password.length < 6) {
@@ -58,7 +54,7 @@ export default function Register() {
     try {
       await authService.requestOtp(formData);
       toast.success("Kode OTP telah dikirim ke email Anda!", { id: "otp-sent" });
-      setStep(2); // Pindah ke layar OTP
+      setStep(2); 
     } catch (error) {
       const pesanError = error.response?.data?.message || "Gagal mengirim OTP.";
       setErrorMsg(pesanError);
@@ -68,7 +64,6 @@ export default function Register() {
     }
   };
 
-  // --- TAHAP 2: VERIFIKASI OTP ---
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const otpCode = otp.join("");
@@ -95,7 +90,6 @@ export default function Register() {
     }
   };
 
-  // --- HANDLER KOTAK OTP ---
   const handleOtpChange = (index, e) => {
     const value = e.target.value;
     if (isNaN(value)) return;
@@ -115,7 +109,6 @@ export default function Register() {
     }
   };
 
-  // --- HANDLER GOOGLE ---
   const handleGoogleRegister = () => {
     const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9000/api";
     window.location.href = `${apiUrl}/auth/google?state=register`;
@@ -123,8 +116,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-slate-950 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-500 relative font-sans">
-      
-      {/* Tombol Back */}
+    
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10">
         <Link to="/login">
           <Button
@@ -163,7 +155,6 @@ export default function Register() {
             </div>
           )}
 
-          {/* ================= TAHAP 1: FORM REGISTER ================= */}
           {step === 1 && (
             <form onSubmit={handleRequestOtp} className="space-y-4">
               <div className="space-y-2">
@@ -248,7 +239,6 @@ export default function Register() {
             </form>
           )}
 
-          {/* ================= TAHAP 2: KOTAK OTP ================= */}
           {step === 2 && (
             <form onSubmit={handleVerifyOtp} className="space-y-6">
               <div className="flex justify-center mb-6">

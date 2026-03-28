@@ -87,7 +87,6 @@ export default function Profil() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500">
       
-      {/* HEADER: SMART AVATAR */}
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-700 dark:text-emerald-400 text-2xl font-bold uppercase">
           {user?.nama?.charAt(0) || 'U'}
@@ -98,7 +97,6 @@ export default function Profil() {
         </div>
       </div>
 
-      {/* NAVIGATION TABS */}
       <div className="flex border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
         <button 
           onClick={() => setActiveTab('profil')} 
@@ -115,8 +113,7 @@ export default function Profil() {
       </div>
 
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 min-h-[300px]">
-        
-        {/* TAB 1: PROFIL */}
+      
         {activeTab === 'profil' && (
           <form onSubmit={handleSaveProfil} className="space-y-4 max-w-xl animate-in slide-in-from-right-4 duration-300">
             <div className="space-y-2">
@@ -148,7 +145,6 @@ export default function Profil() {
             <div className="space-y-2">
               <Label>Target Menabung Bulanan (Rp)</Label>
               <div className="relative">
-                {/* 🌟 FIX: Tipe diubah jadi text dan pakai fungsi handleTargetChange */}
                 <Input 
                   type="text" 
                   value={displayTarget} 
@@ -167,7 +163,6 @@ export default function Profil() {
           </form>
         )}
 
-        {/* TAB 2: KEAMANAN (Dengan proteksi Google Auth) */}
         {activeTab === 'keamanan' && (
           <form onSubmit={handleChangePassword} className="space-y-4 max-w-xl animate-in slide-in-from-right-4 duration-300">
             {!user?.googleId ? (

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Pastikan menyasar ke Port Backend Anda
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:9000/api";
 
 const api = axios.create({
@@ -26,7 +25,6 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Tangani auto-logout jika token expired (Hanya contoh, sesuaikan jika ada useAuthStore)
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';

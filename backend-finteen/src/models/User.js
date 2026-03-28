@@ -4,14 +4,13 @@ const UserSchema = new mongoose.Schema(
   {
     nama: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    // 🌟 FIX: Password hanya wajib jika user daftar manual (tidak pakai Google)
     password: {
       type: String,
       required: function () {
         return !this.googleId;
       },
     },
-    googleId: { type: String, sparse: true }, // ID unik dari Google
+    googleId: { type: String, sparse: true }, 
     profil: {
       status: { type: String, enum: ["pelajar", "mahasiswa", "pekerja"] },
       saldo_awal: { type: Number, default: 0 },
