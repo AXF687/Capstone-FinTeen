@@ -118,22 +118,23 @@ exports.topupTarget = async (req, res) => {
       return res.status(400).json({ message: "Jumlah harus lebih dari 0" });
     }
 
-    const target = await TargetTabungan.findOne({ _id: id, user: userId });
+    const userObjectId = new mongoose.Types.ObjectId(userId);
 
+    const target = await TargetTabungan.findOne({ _id: id, user: userId });
     if (!target) {
       return res.status(404).json({ message: "Target tidak ditemukan" });
     }
 
-    const userModel = await User.findById(userId);
-    const saldoAwal = userModel?.profil?.saldo_awal || 0;
+    const user = await User.findById(userId);
+    const saldoAwal = user?.profil?.saldo_awal || 0;
 
     const pemasukan = await Transaction.aggregate([
-      { $match: { user: new mongoose.Types.ObjectId(userId), tipe: "pemasukan" } },
+      { $match: { user: userObjectId, tipe: "pemasukan" } },
       { $group: { _id: null, total: { $sum: "$nominal" } } },
     ]);
 
     const pengeluaran = await Transaction.aggregate([
-      { $match: { user: new mongoose.Types.ObjectId(userId), tipe: "pengeluaran" } },
+      { $match: { user: userObjectId, tipe: "pengeluaran" } },
       { $group: { _id: null, total: { $sum: "$nominal" } } },
     ]);
 
@@ -142,9 +143,23 @@ exports.topupTarget = async (req, res) => {
 
     const saldo = saldoAwal + totalPemasukan - totalPengeluaran;
 
-    if (jumlah > saldo) {
+    const totalTabungan = await TargetTabungan.aggregate([
+      {
+        $match: {
+          user: userObjectId,
+          _id: { $ne: target._id }, 
+        },
+      },
+      { $group: { _id: null, total: { $sum: "$tabunganSekarang" } } },
+    ]);
+
+    const usedTabungan = totalTabungan[0]?.total || 0;
+
+    const saldoTersedia = saldo - usedTabungan;
+
+    if (jumlah > saldoTersedia) {
       return res.status(400).json({
-        message: `Saldo tidak mencukupi. Saldo Anda saat ini: Rp${saldo.toLocaleString("id-ID")}`,
+        message: `Saldo tidak mencukupi. Sisa saldo Anda: Rp${saldoTersedia.toLocaleString("id-ID")}`,
       });
     }
 
@@ -159,26 +174,13 @@ exports.topupTarget = async (req, res) => {
       tanggal: new Date(),
     });
 
-    const pemasukanBaru = await Transaction.aggregate([
-      { $match: { user: userId, tipe: "pemasukan" } },
-      { $group: { _id: null, total: { $sum: "$nominal" } } },
-    ]);
-
-    const pengeluaranBaru = await Transaction.aggregate([
-      { $match: { user: userId, tipe: "pengeluaran" } },
-      { $group: { _id: null, total: { $sum: "$nominal" } } },
-    ]);
-
-    const totalPemasukanBaru = pemasukanBaru[0]?.total || 0;
-    const totalPengeluaranBaru = pengeluaranBaru[0]?.total || 0;
-
-    const saldoBaru = saldoAwal + totalPemasukanBaru - totalPengeluaranBaru;
-
     if (target.tabunganSekarang >= target.nominalTarget) {
       target.status = "tercapai";
     } else {
       target.status =
-        target.perBulan > saldoBaru ? "tidak realistis" : "realistis";
+        target.perBulan > saldoTersedia - jumlah
+          ? "tidak realistis"
+          : "realistis";
     }
 
     await target.save();
@@ -188,6 +190,7 @@ exports.topupTarget = async (req, res) => {
       target,
       transaction,
     });
+
   } catch (error) {
     console.error("Error in topupTarget:", error);
     res.status(500).json({ message: error.message });
