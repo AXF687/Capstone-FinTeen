@@ -1,6 +1,6 @@
 # 🚀 FinTeen - Smart Budgeting Untuk Anak Muda
 
-**FinTeen** adalah aplikasi pencatatan keuangan pintar yang dirancang khusus untuk generasi muda (pelajar, mahasiswa, dan *first-jobber*). Aplikasi ini membantu pengguna membangun kebiasaan finansial yang sehat dengan melacak arus kas, merencanakan tabungan, menyimulasikan beban hutang, dan menganalisis pengeluaran melalui antarmuka yang modern, responsif, dan intuitif.
+**FinTeen** adalah aplikasi pencatatan keuangan pintar yang dirancang khusus untuk generasi muda (pelajar, mahasiswa, dan pekerja muda). Aplikasi ini membantu pengguna membangun kebiasaan finansial yang sehat dengan melacak arus kas, merencanakan tabungan, menyimulasikan beban hutang, dan menganalisis pengeluaran melalui antarmuka yang modern, responsif, dan intuitif.
 
 ---
 
@@ -14,17 +14,17 @@ Aplikasi ini tidak hanya sekadar mencatat angka, tetapi dilengkapi dengan sistem
   * Pemulihan akun (*Forgot Password*) dengan tautan *reset* aman via email.
   * **Smart Protected Routing:** Sistem penjaga rute berlapis yang secara cerdas mendeteksi kelengkapan data pengguna (memaksa pengguna baru mengisi saldo awal sebelum bisa mengakses *Dashboard*).
 * 👤 **Manajemen Profil Aman:** Pengaturan identitas pengguna, status pekerjaan, dan target menabung bulanan. (Dilengkapi dengan proteksi penguncian email permanen untuk integritas data).
-* ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss1.png?raw=true)
+  ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss1.png?raw=true)
 * 📊 **Dashboard Interaktif:** Ringkasan total saldo, arus kas bulanan, dan progres keuangan sekilas pandang.
-* ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss2.png?raw=true)
+  ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss2.png?raw=true)
 * 💸 **Manajemen Transaksi:** Pencatatan pemasukan dan pengeluaran harian dengan kategorisasi yang jelas.
-* ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss3.png?raw=true)
+  ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss3.png?raw=true)
 * 🏦 **Simulasi Hutang:** Fitur kalkulasi cerdas untuk menyimulasikan skema pinjaman atau cicilan. Membantu pengguna merencanakan pelunasan dan memahami estimasi beban finansial bulanan sebelum mengambil keputusan hutang.
-* ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss4.png?raw=true)
+  ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss4.png?raw=true)
 * 🎯 **Target Tabungan:** Pembuatan *goals* atau impian finansial beserta pelacakan progres pengumpulannya.
-* ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss5.png?raw=true)
+  ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss5.png?raw=true)
 * 📈 **Analisis Finansial:** Laporan dan grafik visual untuk melihat kebiasaan pengeluaran selama periode tertentu.
-* ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss6.png?raw=true)
+  ![alt text](https://github.com/AXF687/Capstone-FinTeen/blob/developV2/frontend-finteen/public/ss6.png?raw=true)
 
 ---
 
