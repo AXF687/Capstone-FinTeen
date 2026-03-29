@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:9000/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://capstone-finteen-production.up.railway.app/api";
 
 const api = axios.create({
   baseURL: BASE_URL,
