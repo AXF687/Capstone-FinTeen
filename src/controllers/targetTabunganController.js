@@ -1,6 +1,7 @@
 const TargetTabungan = require("../models/TargetTabungan");
 const Transaction = require("../models/Transaction");
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 exports.createTarget = async (req, res) => {
   try {
@@ -11,12 +12,12 @@ exports.createTarget = async (req, res) => {
     const saldoAwal = user?.profil?.saldo_awal || 0;
 
     const pemasukan = await Transaction.aggregate([
-      { $match: { user: userId, tipe: "pemasukan" } },
+      { $match: { user: new mongoose.Types.ObjectId(userId), tipe: "pemasukan" } },
       { $group: { _id: null, total: { $sum: "$nominal" } } },
     ]);
 
     const pengeluaran = await Transaction.aggregate([
-      { $match: { user: userId, tipe: "pengeluaran" } },
+      { $match: { user: new mongoose.Types.ObjectId(userId), tipe: "pengeluaran" } },
       { $group: { _id: null, total: { $sum: "$nominal" } } },
     ]);
 
@@ -127,12 +128,12 @@ exports.topupTarget = async (req, res) => {
     const saldoAwal = userModel?.profil?.saldo_awal || 0;
 
     const pemasukan = await Transaction.aggregate([
-      { $match: { user: userId, tipe: "pemasukan" } },
+      { $match: { user: new mongoose.Types.ObjectId(userId), tipe: "pemasukan" } },
       { $group: { _id: null, total: { $sum: "$nominal" } } },
     ]);
 
     const pengeluaran = await Transaction.aggregate([
-      { $match: { user: userId, tipe: "pengeluaran" } },
+      { $match: { user: new mongoose.Types.ObjectId(userId), tipe: "pengeluaran" } },
       { $group: { _id: null, total: { $sum: "$nominal" } } },
     ]);
 
