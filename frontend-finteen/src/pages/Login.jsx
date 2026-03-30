@@ -62,7 +62,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:9000/api";
+    const apiUrl = import.meta.env.VITE_API_URL || "https://capstone-finteen-production.up.railway.app/";
     window.location.href = `${apiUrl}/auth/google`;
   };
 
