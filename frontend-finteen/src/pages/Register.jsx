@@ -110,7 +110,7 @@ export default function Register() {
   };
 
   const handleGoogleRegister = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || "https://capstone-finteen-production.up.railway.app/";
+    const apiUrl = import.meta.env.VITE_API_URL || "https://capstone-finteen-production.up.railway.app/api";
     window.location.href = `${apiUrl}/auth/google?state=register`;
   };
 
