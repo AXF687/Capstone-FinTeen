@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AuthCallback() {
   const [searchParams] = useSearchParams();
@@ -11,13 +12,18 @@ export default function AuthCallback() {
   useEffect(() => {
     const token = searchParams.get("token");
     const isNewUser = searchParams.get("isNew") === "true";
+    const error = searchParams.get("error");
+
+    if (error) {
+      toast.error("Login dengan Google gagal.");
+      navigate("/login", { replace: true });
+      return;
+    }
 
     if (token) {
-      // Proses token dari Google
       loginWithGoogleToken(token, isNewUser);
     } else {
-      // Jika tidak ada token, redirect ke login
-      navigate("/login?error=no_token");
+      navigate("/login", { replace: true });
     }
   }, [searchParams, navigate, loginWithGoogleToken]);
 
