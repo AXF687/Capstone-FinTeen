@@ -176,5 +176,5 @@ exports.googleCallback = (req, res) => {
   user.last_login = new Date();
   user.save();
 
-  res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}${isNewParam}`);
+ res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&isNew=${isNewParam}`);
 };
