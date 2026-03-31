@@ -2,10 +2,12 @@ const express = require("express");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
-const { login, forgotPassword, resetPassword, googleCallback, requestOtp, verifyOtp } = require("../controllers/authController");
+const { login, forgotPassword, resetPassword, requestOtp, verifyOtp } = require("../controllers/authController");
 const router = express.Router();
 
+// Google Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || 'dummy',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy',
@@ -28,6 +30,11 @@ passport.use(new GoogleStrategy({
           nama: profile.displayName,
           email: email,
           googleId: profile.id,
+          profil: {
+            status: "pelajar",
+            saldo_awal: 0,
+            target_bulanan: 0
+          }
         });
         user.isNewUserFlag = true; 
       } else if (!user.googleId) {
@@ -42,20 +49,30 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+// Fungsi generate token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+};
+
+// Routes
 router.post("/register-request", requestOtp);
 router.post("/verify-otp", verifyOtp);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.put("/reset-password/:token", resetPassword);
 
+// Google Auth Routes
 router.get("/google", (req, res, next) => {
-  const state = req.query.state || 'login'; // Default ke login
+  const state = req.query.state || 'login';
   passport.authenticate("google", { scope: ["profile", "email"], session: false, state })(req, res, next);
 });
 
 router.get("/google/callback", (req, res, next) => {
   passport.authenticate("google", { session: false }, (err, user, info) => {
-    if (err) return res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
+    if (err) {
+      console.error("Google auth error:", err);
+      return res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
+    }
 
     if (!user) {
       if (info && info.message === 'email_exists') {
@@ -64,9 +81,22 @@ router.get("/google/callback", (req, res, next) => {
       return res.redirect(`${process.env.FRONTEND_URL}/login?error=google_failed`);
     }
 
-    req.user = user;
-    next();
+    // ✅ Handle success - generate token dan redirect ke frontend
+    try {
+      const token = generateToken(user._id);
+      const isNewUser = user.isNewUserFlag || false;
+      
+      // Update last_login
+      user.last_login = new Date();
+      user.save();
+      
+      // Redirect ke frontend callback handler
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&isNew=${isNewUser}`);
+    } catch (error) {
+      console.error("Token generation error:", error);
+      res.redirect(`${process.env.FRONTEND_URL}/login?error=token_error`);
+    }
   })(req, res, next);
-}, googleCallback);
+});
 
 module.exports = router;
