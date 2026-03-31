@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 import MainLayout from "./layouts/MainLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AuthCallback from "./pages/AuthCallback"; // ✅ TAMBAHKAN
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profil from "./pages/Profil";
@@ -24,23 +25,20 @@ import Hutang from "./pages/hutang/Hutang";
 import Tabungan from "./pages/tabungan/Tabungan";
 import Analisis from "./pages/analisis/Analisis";
 
-// 🌟 SATPAM DALAM (Menggunakan Ide Brilian Anda: Saldo Awal == 0)
+// SATPAM DALAM
 function PrivateRoute({ children }) {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  // 💡 LOGIKA SANG RAJA: Jika saldo_awal = 0 atau belum ada, berarti belum setup!
   const butuhSetup =
     user?.profil?.saldo_awal === 0 || user?.profil?.saldo_awal == null;
 
-  // Jika butuh setup TAPI user mencoba masuk ke halaman selain setup-profil
   if (butuhSetup && location.pathname !== "/setup-profil") {
     return <Navigate to="/setup-profil" replace />;
   }
 
-  // Jika TIDAK butuh setup (saldo > 0) TAPI user iseng buka halaman setup-profil
   if (!butuhSetup && location.pathname === "/setup-profil") {
     return <Navigate to="/dashboard" replace />;
   }
@@ -52,7 +50,6 @@ function GuestRoute({ children }) {
   const { isAuthenticated, user } = useAuthStore();
 
   if (isAuthenticated) {
-    // 💡 LOGIKA SANG RAJA: Arahkan berdasarkan saldo_awal
     const butuhSetup =
       user?.profil?.saldo_awal === 0 || user?.profil?.saldo_awal == null;
     return (
@@ -93,6 +90,8 @@ export default function App() {
             </GuestRoute>
           }
         />
+        {/* ✅ ROUTE CALLBACK GOOGLE - TAMBAHKAN DI SINI */}
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route
           path="/forgot-password"
           element={
