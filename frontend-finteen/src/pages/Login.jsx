@@ -23,26 +23,26 @@ export default function Login() {
     document.title = "Login - FinTeen";
   }, []);
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const tokenFromGoogle = urlParams.get("token");
-    const errorFromGoogle = urlParams.get("error");
-    const isNewUser = urlParams.get("isNew") === "true"; 
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(location.search);
+  //   const tokenFromGoogle = urlParams.get("token");
+  //   const errorFromGoogle = urlParams.get("error");
+  //   const isNewUser = urlParams.get("isNew") === "true"; 
 
-    if (tokenFromGoogle) {
-      window.history.replaceState({}, document.title, "/login");
-      loginWithGoogleToken(tokenFromGoogle, isNewUser);
-    }
+  //   if (tokenFromGoogle) {
+  //     window.history.replaceState({}, document.title, "/login");
+  //     loginWithGoogleToken(tokenFromGoogle, isNewUser);
+  //   }
 
-    if (errorFromGoogle) {
-      window.history.replaceState({}, document.title, "/login");
-      if (errorFromGoogle === "email_exists") {
-        toast.error("Email sudah terdaftar! Silakan langsung login pakai password.", { id: "google-err-exist" });
-      } else {
-        toast.error("Login dengan Google gagal atau dibatalkan.", { id: "google-err-fail" });
-      }
-    }
-  }, [location, loginWithGoogleToken]);
+  //   if (errorFromGoogle) {
+  //     window.history.replaceState({}, document.title, "/login");
+  //     if (errorFromGoogle === "email_exists") {
+  //       toast.error("Email sudah terdaftar! Silakan langsung login pakai password.", { id: "google-err-exist" });
+  //     } else {
+  //       toast.error("Login dengan Google gagal atau dibatalkan.", { id: "google-err-fail" });
+  //     }
+  //   }
+  // }, [location, loginWithGoogleToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
