@@ -4,15 +4,21 @@ import useAuth from "../hooks/useAuth";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
+// pages/AuthCallback.jsx
 export default function AuthCallback() {
+  console.log("🚀 AuthCallback component mounted!"); // <-- TAMBAHKAN INI
+  
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { loginWithGoogleToken } = useAuth();
 
   useEffect(() => {
+    console.log("🔍 Processing callback..."); // <-- TAMBAHKAN INI
     const token = searchParams.get("token");
     const isNewUser = searchParams.get("isNew") === "true";
     const error = searchParams.get("error");
+
+    console.log("Token:", token ? "Ada" : "Tidak ada"); // <-- TAMBAHKAN INI
 
     if (error) {
       toast.error("Login dengan Google gagal.");
