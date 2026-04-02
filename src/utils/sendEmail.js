@@ -1,10 +1,13 @@
 const nodemailer = require('nodemailer');
+const dns = require('dns');
+
+// Paksa DNS menggunakan IPv4
+dns.setDefaultResultOrder('ipv4first');
 
 const sendEmail = async (options) => {
   console.log(`📧 Mencoba mengirim email ke: ${options.email}`);
   console.log(`📧 Subject: ${options.subject}`);
   
-  // Validasi environment variables
   if (!process.env.SMTP_HOST || !process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
     console.error("❌ SMTP environment variables missing!");
     throw new Error("Konfigurasi SMTP tidak lengkap");
@@ -13,16 +16,17 @@ const sendEmail = async (options) => {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
-    secure: true, // true untuk port 465
+    secure: true,
     auth: {
       user: process.env.SMTP_EMAIL,
       pass: process.env.SMTP_PASSWORD,
     },
-    connectionTimeout: 10000, // 10 detik timeout koneksi
-    greetingTimeout: 10000,   // 10 detik timeout greeting
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    // Paksa koneksi ke IPv4
+    family: 4,
   });
 
-  // Cek apakah message berupa HTML
   const isHtml = options.message && options.message.includes('<') && options.message.includes('>');
 
   const message = {
