@@ -12,7 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 import MainLayout from "./layouts/MainLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AuthCallback from "./pages/AuthCallback"; // ✅ TAMBAHKAN
+import AuthCallback from "./pages/AuthCallback"; // ✅ TAMBAHKANa
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profil from "./pages/Profil";
