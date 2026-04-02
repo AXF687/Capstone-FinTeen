@@ -2,19 +2,22 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const OtpVerification = require("../models/OtpVerification"); // 🌟 Model OTP
+const OtpVerification = require("../models/OtpVerification");
 const sendEmail = require("../utils/sendEmail");
 
+// ✅ GENERATE TOKEN - PASTIKAN INI ADA (HANYA 1 KALI)
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
+
+// ✅ EXPORT generateToken AGAR BISA DIGUNAKAN DI ROUTES
+exports.generateToken = generateToken;
 
 exports.requestOtp = async (req, res) => {
   try {
     const { nama, email, password } = req.body;
     if (!nama || !email || !password) return res.status(400).json({ message: "Semua field wajib diisi" });
 
-    // Validasi Domain Gmail
     if (!email.endsWith("@gmail.com")) {
       return res.status(400).json({ message: "Pendaftaran wajib menggunakan akun @gmail.com yang valid!" });
     }
@@ -22,9 +25,7 @@ exports.requestOtp = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "Email sudah terdaftar. Silakan login." });
 
-    // Generate 6 Digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await OtpVerification.findOneAndDelete({ email }); 
@@ -165,16 +166,4 @@ exports.resetPassword = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
-
-exports.googleCallback = (req, res) => {
-  const user = req.user; 
-  const token = generateToken(user._id);
-
-  const isNewParam = user.isNewUserFlag ? "&isNew=true" : "";
-
-  user.last_login = new Date();
-  user.save();
-
- res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&isNew=${isNewParam}`);
 };
