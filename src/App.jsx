@@ -24,6 +24,7 @@ import Hutang from "./pages/hutang/Hutang";
 import Tabungan from "./pages/tabungan/Tabungan";
 import Analisis from "./pages/analisis/Analisis";
 import AuthCallback from "./pages/AuthCallback"; // ✅ IMPORT
+import Test from "./pages/Test";
 
 // SATPAM DALAM
 function PrivateRoute({ children }) {
@@ -68,6 +69,7 @@ export default function App() {
         <Route path="/" element={<GuestRoute><Landing /></GuestRoute>} />
         <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
         <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
+        <Route path="/test" element={<Test />} />
         
         {/* ✅ ROUTE CALLBACK - TARUH DI SINI */}
         <Route path="/auth/callback" element={<AuthCallback />} />
