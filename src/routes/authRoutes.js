@@ -1,8 +1,10 @@
 const express = require("express");
 const passport = require("passport");
+// ✅ TAMBAHKAN INI - IMPOR GOOGLESTRATEGY
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
 
-// ✅ IMPORT dari controller (JANGAN import generateToken lagi)
+// Import dari controller
 const { 
   login, 
   forgotPassword, 
@@ -11,16 +13,16 @@ const {
   verifyOtp 
 } = require("../controllers/authController");
 
-// ✅ Import generateToken dari controller
+// Import generateToken dari controller
 const { generateToken } = require("../controllers/authController");
 
 const router = express.Router();
 
-// Google Strategy
+// ✅ SEKARANG GoogleStrategy sudah terdefinisi
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL, // ✅ PASTIKAN URL INI BENAR
+    callbackURL: process.env.GOOGLE_CALLBACK_URL,
     passReqToCallback: true 
   },
   async (req, accessToken, refreshToken, profile, done) => {
@@ -71,7 +73,6 @@ router.get("/google", (req, res, next) => {
   passport.authenticate("google", { scope: ["profile", "email"], session: false, state })(req, res, next);
 });
 
-// ✅ PERBAIKAN: Google Callback
 router.get("/google/callback", (req, res, next) => {
   passport.authenticate("google", { session: false }, (err, user, info) => {
     if (err) {
@@ -87,14 +88,12 @@ router.get("/google/callback", (req, res, next) => {
     }
 
     try {
-      // ✅ Gunakan generateToken dari controller
       const token = generateToken(user._id);
       const isNewUser = user.isNewUserFlag || false;
       
       user.last_login = new Date();
       user.save();
       
-      // ✅ Redirect ke frontend
       res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&isNew=${isNewUser}`);
     } catch (error) {
       console.error("Token generation error:", error);
