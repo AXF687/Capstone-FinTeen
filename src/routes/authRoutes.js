@@ -1,17 +1,26 @@
 const express = require("express");
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
 
-const { login, forgotPassword, resetPassword, requestOtp, verifyOtp } = require("../controllers/authController");
+// ✅ IMPORT dari controller (JANGAN import generateToken lagi)
+const { 
+  login, 
+  forgotPassword, 
+  resetPassword, 
+  requestOtp, 
+  verifyOtp 
+} = require("../controllers/authController");
+
+// ✅ Import generateToken dari controller
+const { generateToken } = require("../controllers/authController");
+
 const router = express.Router();
 
 // Google Strategy
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID || 'dummy',
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy',
-    callbackURL: process.env.GOOGLE_CALLBACK_URL || '/api/auth/google/callback',
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL, // ✅ PASTIKAN URL INI BENAR
     passReqToCallback: true 
   },
   async (req, accessToken, refreshToken, profile, done) => {
@@ -49,11 +58,6 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-// Fungsi generate token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-};
-
 // Routes
 router.post("/register-request", requestOtp);
 router.post("/verify-otp", verifyOtp);
@@ -67,6 +71,7 @@ router.get("/google", (req, res, next) => {
   passport.authenticate("google", { scope: ["profile", "email"], session: false, state })(req, res, next);
 });
 
+// ✅ PERBAIKAN: Google Callback
 router.get("/google/callback", (req, res, next) => {
   passport.authenticate("google", { session: false }, (err, user, info) => {
     if (err) {
@@ -81,16 +86,15 @@ router.get("/google/callback", (req, res, next) => {
       return res.redirect(`${process.env.FRONTEND_URL}/login?error=google_failed`);
     }
 
-    // ✅ Handle success - generate token dan redirect ke frontend
     try {
+      // ✅ Gunakan generateToken dari controller
       const token = generateToken(user._id);
       const isNewUser = user.isNewUserFlag || false;
       
-      // Update last_login
       user.last_login = new Date();
       user.save();
       
-      // Redirect ke frontend callback handler
+      // ✅ Redirect ke frontend
       res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}&isNew=${isNewUser}`);
     } catch (error) {
       console.error("Token generation error:", error);
