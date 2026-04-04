@@ -1,4 +1,4 @@
-# 🚀 FinTeen - Smart Budgeting Untuk Anak Muda
+# 💸 FinTeen - Smart Budgeting Untuk Anak Muda
 
 **FinTeen** adalah aplikasi pencatatan keuangan pintar yang dirancang khusus untuk generasi muda (pelajar, mahasiswa, dan pekerja muda). Aplikasi ini membantu pengguna membangun kebiasaan finansial yang sehat dengan melacak arus kas, merencanakan tabungan, menyimulasikan beban hutang, dan menganalisis pengeluaran melalui antarmuka yang modern, responsif, dan intuitif.
 
@@ -48,3 +48,94 @@ Proyek *Frontend* ini dibangun menggunakan ekosistem React modern untuk memastik
 ### 🔌 Interaksi API & Utilities
 * **[Axios](https://axios-http.com/):** *HTTP Client* yang dikonfigurasi secara khusus (*custom instance*) untuk menangani *timeout*, mengirim *credentials* (cookies), dan berkomunikasi dengan *Backend* RESTful API.
 * **[Sonner](https://sonner.emilkowal.ski/):** Pustaka notifikasi (*toast*) elegan dengan fitur *anti-spam ID* untuk memberikan *feedback* visual yang rapi kepada pengguna (misal: sukses *login* atau OTP salah).
+
+---
+
+## 🚀 Cara Menjalankan Project
+
+### 1. Clone Repository
+Clone repository dari GitHub:
+
+```bash
+git clone https://github.com/AXF687/Capstone-FinTeen.git
+```
+
+Atau download file ZIP lalu extract.
+
+---
+
+### 2. Masuk ke Folder Project
+```bash
+cd Capstone-FinTeen
+```
+
+---
+
+### 3. Install Dependencies
+
+Karena project terdiri dari **frontend** dan **backend**, maka install dilakukan **secara terpisah**.
+
+#### 🔹 Backend
+```bash
+cd backend-finteen
+npm install
+```
+
+#### 🔹 Frontend
+Buka terminal baru atau kembali ke root:
+```bash
+cd frontend-finteen
+npm install
+```
+
+---
+
+### 4. Menjalankan Project
+
+#### 🔹 Jalankan Backend
+```bash
+cd backend-finteen
+npm run dev
+```
+atau
+```bash
+npm start
+```
+
+#### 🔹 Jalankan Frontend
+```bash
+cd frontend-finteen
+npm run dev
+```
+
+---
+
+### 5. Akses Aplikasi
+
+- Frontend: biasanya di `http://localhost:5173`
+- Backend: biasanya di `http://localhost:9000`
+
+---
+
+## ⚠️ Catatan
+
+- Pastikan Node.js sudah terinstall
+- Jalankan frontend & backend di terminal yang berbeda
+- Jika ada file `.env`, pastikan sudah dikonfigurasi dengan benar
+
+---
+
+## ❓ FAQ
+
+### Apakah `npm install` otomatis untuk frontend dan backend?
+
+Tidak. Perintah `npm install` hanya berlaku untuk folder tempat perintah tersebut dijalankan.
+
+Jadi, kamu harus menjalankan:
+- `npm install` di folder **backend-finteen**
+- `npm install` di folder **frontend-finteen**
+
+---
+
+
+
