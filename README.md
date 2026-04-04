@@ -88,24 +88,27 @@ Salin teks di bawah ini ke dalam file `.env` Anda dan ganti nilai di dalam kurun
 ```env
 # SERVER & DATABASE
 PORT=9000
-MONGO_URI=<MASUKKAN_URL_MONGODB_ANDA_DISINI>
-JWT_SECRET=<MASUKKAN_SECRET_KEY_JWT_ANDA_DISINI>
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_very_strong_jwt_secret_key
+
 FRONTEND_URL=http://localhost:5173
 
-# SMTP MAILER
+# SMTP MAILER (Email OTP)
 SMTP_HOST=mail.kulijowo.com
 SMTP_PORT=465
 SMTP_EMAIL=finteen@kulijowo.com
-SMTP_PASSWORD=<MASUKKAN_PASSWORD_EMAIL_DISINI>
+SMTP_PASSWORD=your_email_password
+
 FROM_NAME="FinTeen Support"
 FROM_EMAIL="finteen@kulijowo.com"
 
 # GOOGLE OAUTH 2.0
 GOOGLE_CLIENT_ID=124004066129-e3gu2e463s1sdpelsb3jtr95qcoac674.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=<MASUKKAN_GOOGLE_SECRET_DISINI>
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_CALLBACK_URL=http://localhost:9000/api/auth/google/callback
 
 ---
+```
 
 ## 🚀 Cara Menjalankan Project
 
