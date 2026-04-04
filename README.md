@@ -51,6 +51,65 @@ Proyek *Frontend* ini dibangun menggunakan ekosistem React modern untuk memastik
 
 ---
 
+## ⚙️ Petunjuk Setup Environment (.env)
+
+Untuk menjalankan proyek *Backend* ini secara lokal, Anda harus mengonfigurasi *Environment Variables*. 
+
+Buatlah sebuah file baru bernama `.env` di *root directory* (folder paling luar) proyek ini. Kemudian, salin format di bawah ini dan isi nilainya sesuai dengan kredensial lokal atau server Anda.
+
+> **⚠️ PERINGATAN KEAMANAN:** File `.env` memuat informasi rahasia (*secret keys*, *passwords*, *database URI*). Pastikan file `.env` sudah masuk ke dalam `.gitignore` agar tidak ikut ter-*push* ke repositori publik!
+
+### Daftar Variabel Environment
+
+| Nama Variabel | Deskripsi & Kegunaan | Contoh Nilai / Default |
+| :--- | :--- | :--- |
+| **Konfigurasi Server & Database** | | |
+| `PORT` | *Port* tempat *server backend* berjalan secara lokal. | `9000` |
+| `MONGO_URI` | *Connection string* untuk terhubung ke *database* MongoDB (Atlas atau Local). | `mongodb://<username>:<password>@cluster.mongodb.net...` |
+| `JWT_SECRET` | Kunci rahasia (*secret key*) acak untuk enkripsi dan verifikasi token autentikasi. | `isi_dengan_string_acak_yang_panjang` |
+| `FRONTEND_URL` | URL tempat aplikasi *frontend* berjalan (digunakan untuk CORS dan *redirect*). | `http://localhost:5173` |
+| **Konfigurasi SMTP (Email Service)** | *Digunakan untuk mengirim OTP & Reset Password* | |
+| `SMTP_HOST` | Host server SMTP penyedia layanan email. | `mail.kulijowo.com` |
+| `SMTP_PORT` | Port server SMTP (biasanya 465 untuk SSL atau 587 untuk TLS). | `465` |
+| `SMTP_EMAIL` | Alamat email yang digunakan untuk autentikasi server SMTP. | `finteen@domainanda.com` |
+| `SMTP_PASSWORD` | *Password* dari akun email SMTP tersebut. | `password_email_anda` |
+| `FROM_NAME` | Nama pengirim yang akan muncul di kotak masuk pengguna. | `"FinTeen Support"` |
+| `FROM_EMAIL` | Alamat email pengirim yang terlihat oleh pengguna. | `"finteen@domainanda.com"` |
+| **Konfigurasi Google OAuth (SSO)** | *Digunakan untuk fitur Login/Register with Google* | |
+| `GOOGLE_CLIENT_ID` | *Client ID* yang didapatkan dari Google Cloud Console. | `12400...apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | *Client Secret* yang didapatkan dari Google Cloud Console. | `GOCSPX-...` |
+| `GOOGLE_CALLBACK_URL` | URL *endpoint backend* yang dituju setelah pengguna berhasil otorisasi Google. | `http://localhost:9000/api/auth/google/callback` |
+
+---
+
+### Contoh File `.env` (Template)
+Salin teks di bawah ini ke dalam file `.env` Anda dan ganti nilai di dalam kurung siku `<...>`:
+
+```env
+# SERVER & DATABASE
+PORT=9000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_very_strong_jwt_secret_key
+
+FRONTEND_URL=http://localhost:5173
+
+# SMTP MAILER (Email OTP)
+SMTP_HOST=mail.kulijowo.com
+SMTP_PORT=465
+SMTP_EMAIL=finteen@kulijowo.com
+SMTP_PASSWORD=your_email_password
+
+FROM_NAME="FinTeen Support"
+FROM_EMAIL="finteen@kulijowo.com"
+
+# GOOGLE OAUTH 2.0
+GOOGLE_CLIENT_ID=124004066129-e3gu2e463s1sdpelsb3jtr95qcoac674.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:9000/api/auth/google/callback
+
+```
+---
+
 ## 🚀 Cara Menjalankan Project
 
 ### 1. Clone Repository
