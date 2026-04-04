@@ -107,8 +107,8 @@ GOOGLE_CLIENT_ID=124004066129-e3gu2e463s1sdpelsb3jtr95qcoac674.apps.googleuserco
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_CALLBACK_URL=http://localhost:9000/api/auth/google/callback
 
----
 ```
+---
 
 ## 🚀 Cara Menjalankan Project
 
