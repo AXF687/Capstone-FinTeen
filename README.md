@@ -57,7 +57,7 @@ Proyek *Frontend* ini dibangun menggunakan ekosistem React modern untuk memastik
 Clone repository dari GitHub:
 
 ```bash
-git clone https://github.com/AXF687/Capstone-FinTeen.git
+git clone -b developV2 https://github.com/AXF687/Capstone-FinTeen.git
 ```
 
 Atau download file ZIP lalu extract.
