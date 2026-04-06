@@ -156,17 +156,16 @@ npm install
 cd backend-finteen
 npm run dev
 ```
-atau
-```bash
-npm start
-```
-
 #### 🔹 Jalankan Frontend
 ```bash
 cd frontend-finteen
 npm run dev
 ```
 
+atau jalankan secara bersamaan di folder utama
+```bash
+npm run dev
+```
 ---
 
 ### 5. Akses Aplikasi
