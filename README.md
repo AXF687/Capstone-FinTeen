@@ -116,7 +116,7 @@ GOOGLE_CALLBACK_URL=http://localhost:9000/api/auth/google/callback
 Clone repository dari GitHub:
 
 ```bash
-git clone https://github.com/AXF687/Capstone-FinTeen.git
+git clone -b developV2 https://github.com/AXF687/Capstone-FinTeen.git
 ```
 
 Atau download file ZIP lalu extract.
@@ -156,17 +156,16 @@ npm install
 cd backend-finteen
 npm run dev
 ```
-atau
-```bash
-npm start
-```
-
 #### 🔹 Jalankan Frontend
 ```bash
 cd frontend-finteen
 npm run dev
 ```
 
+atau jalankan secara bersamaan di folder utama
+```bash
+npm run dev
+```
 ---
 
 ### 5. Akses Aplikasi
