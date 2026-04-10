@@ -1,43 +1,26 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
-
-// ✅ FORCE IPv4 (Railway gak support IPv6)
-dns.setDefaultResultOrder('ipv4first');
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_EMAIL,
-    pass: process.env.SMTP_PASSWORD
-  },
-  // ✅ TAMBAHKAN INI
-  family: 4, // Force IPv4
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
-  tls: {
-    rejectUnauthorized: false // Karena pakai custom domain
-  }
-});
+const axios = require('axios');
 
 const sendEmail = async ({ email, subject, message }) => {
-  console.log(`📧 Mengirim email ke: ${email}`);
-
+  console.log(`📧 Mengirim email ke: ${email} via PHP API`);
+  
   try {
-    const info = await transporter.sendMail({
-      from: `"FinTeen" <${process.env.SMTP_EMAIL}>`,
-      to: email,
-      subject: subject,
-      html: message,
-    });
-
-    console.log("✅ Email berhasil:", info.response);
-    return info;
-
+    const response = await axios.post(
+      'https://kulijowo.com/api/mail/send-email.php',
+      { email, subject, message },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.EMAIL_API_TOKEN}`
+        },
+        timeout: 10000
+      }
+    );
+    
+    console.log("✅ Email berhasil:", response.data);
+    return response.data;
+    
   } catch (error) {
-    console.error("❌ Error email:", error);
+    console.error("❌ Error email:", error.response?.data || error.message);
     throw error;
   }
 };
