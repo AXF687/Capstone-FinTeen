@@ -1,3 +1,16 @@
+const nodemailer = require("nodemailer");
+
+// ✅ WAJIB ADA INI
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT),
+  secure: false, // karena pakai 587
+  auth: {
+    user: process.env.SMTP_EMAIL,
+    pass: process.env.SMTP_PASSWORD
+  }
+});
+
 const sendEmail = async ({ email, subject, message }) => {
   console.log(`📧 Mengirim email ke: ${email}`);
 
