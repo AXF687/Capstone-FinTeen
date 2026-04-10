@@ -177,7 +177,7 @@ exports.login = async (req, res) => {
 };
 
 exports.forgotPassword = async (req, res) => {
-  let user; // Declare di luar try-catch agar bisa diakses di catch
+  let user;
   
   try {
     user = await User.findOne({ email: req.body.email });
@@ -273,4 +273,15 @@ exports.googleCallback = (req, res) => {
   user.save();
 
   res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}${isNewParam}`);
+};
+
+// ✅ EXPORT generateToken DI SINI
+module.exports = {
+  requestOtp: exports.requestOtp,
+  verifyOtp: exports.verifyOtp,
+  login: exports.login,
+  forgotPassword: exports.forgotPassword,
+  resetPassword: exports.resetPassword,
+  googleCallback: exports.googleCallback,
+  generateToken: generateToken  // ✅ Export generateToken
 };
