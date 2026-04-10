@@ -1,13 +1,24 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns");
 
-// ✅ WAJIB ADA INI
+// ✅ FORCE IPv4 (Railway gak support IPv6)
+dns.setDefaultResultOrder('ipv4first');
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT),
-  secure: false, // karena pakai 587
+  secure: false,
   auth: {
     user: process.env.SMTP_EMAIL,
     pass: process.env.SMTP_PASSWORD
+  },
+  // ✅ TAMBAHKAN INI
+  family: 4, // Force IPv4
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
+  tls: {
+    rejectUnauthorized: false // Karena pakai custom domain
   }
 });
 
